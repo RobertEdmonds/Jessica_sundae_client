@@ -1,47 +1,74 @@
 import React,{useState, useEffect} from "react";
+import SundaeReviews from "./SundaeReviews";
 
 function Sundaes(){
     const [sundaes, setSundaes] = useState([])
-    const [ingredient, setIngredient] = useState([])
-    const [ingredientShow, setIngredientShow] = useState("none")
+    const [reviews, setReviews] = useState([])
+    const [sundaeId, setSundaeId] = useState(0)
+    const [showReviews, setShowReviews] = useState("none")
 
     useEffect(()=>{
-        fetch("http://localhost:3500/sundae")
+        fetch("http://localhost:3500/sundaes")
         .then(r => r.json())
         .then(sundae => setSundaes(sundae))
     },[])
 
-    function handleShowIngredients(id){
-        fetch(`http://localhost:3500/sundae_ingredients/${id}`)
-        .then(r => r.json())
-        .then(item => setIngredient(item))
-        setIngredientShow("block")
+    function handleLikes(item){
+        fetch(`http://localhost:3500/sundae/${item.id}`,{
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+           likes: item.likes + 1 
+        }),
+    })
+        .then(resp => resp.json())
+        .then(newItem => handleUpdatedSundae(newItem))
     }
-    const show_ingredient = ingredient.map(item => {
+
+    function handleUpdatedSundae(item){
+        const updatedItem = sundaes.map(sundae =>{
+          if(sundae.id === item.id){
+            return item
+          }else{
+            return sundae
+          }
+        })
+        setSundaes(updatedItem)
+    }
+
+    function handleReviews(item){
+        // fetch(`http://localhost:3500/sundae/${id}`)
+        // .then(resp => resp.json())
+        // .then(review => {
+        //     setSundaeId(id)
+        //     setShowReviews("block")
+        //     setReviews(review)
+        // })
+        const updatedItem = sundaes.find(sundae => sundae.id === item.id)
+            setSundaeId(item.id)
+            setShowReviews("block")
+            setReviews(updatedItem.sundae_reviews)
+    }
+
+    const show_sundae = sundaes.map(item =>{
         return(
             <>
-            <ul style={{display: ingredientShow}}>
-                <li>{item}</li>
-            </ul> 
+                <div key={item.id}>
+                    <img src={item.image_url} alt={item.name} style={{width: "250px", height: "200px"}}/>
+                    <h2>{item.name}</h2>
+                    <p style={{width: "500px"}}>Ingredients: {item.ingredients}</p>
+                    <button onClick={()=>handleLikes(item)}>Likes {item.likes}</button>
+                    <button onClick={()=>handleReviews(item)}>Reviews</button>
+                </div>
+                <br/>
             </>
         )
     })
-    const show_sundae = sundaes.map(item =>{
-        return(
-            <div >
-                <img onClick={() => handleShowIngredients(item.id)} src={item.image_url} alt={item.name} style={{width: "250px", height: "200px"}}/>
-                <h2>{item.name}</h2>
-                <button>Likes {item.likes}</button>
-            </div>
-        )
-    })
-    console.log(show_ingredient[0])
     return(
         <>
-        <div style={{position: "fixed", width: "50px" , left: "900px"}}>
-            <h3 style={{display: ingredientShow}}>Ingredients</h3>
-            {show_ingredient}
-        </div>
+        <SundaeReviews reviews={reviews} setReviews={setReviews} sundaeId={sundaeId} showReviews={showReviews}/>
         {show_sundae}
         </>
     )

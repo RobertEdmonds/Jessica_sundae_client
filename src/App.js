@@ -4,7 +4,6 @@ import NavBar from './NavBar';
 import Home from './Home.js';
 import Sundaes from './Sundaes.js';
 import Shakes from './Shakes.js';
-import CustomerFav from './CustomerFav.js';
 import Footer from './Footer.js';
 import './App.css';
 
@@ -12,8 +11,9 @@ function App() {
   return (
     <div className="App">
       <NavBar/>
+      <br/>
       <Routes>
-        <Route exact path="/" element={<Home />}/>
+        <Route exact="true" path="/" element={<Home />}/>
           {/* <Home />
         </Route> */}
         <Route path="/sundaes" element={<Sundaes />}/>
@@ -21,9 +21,6 @@ function App() {
         </Route> */}
         <Route path="/shakes" element={<Shakes />}/>
           {/* <Shakes />
-        </Route> */}
-        <Route path="/customer_favorite" element={<CustomerFav />}/>
-          {/* <CustomerFav/>
         </Route> */}
       </Routes>
       <Footer />

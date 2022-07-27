@@ -8,34 +8,24 @@ function NavBar(){
         <div className="navBar">
             <NavLink
                 to="/"
-                exact
+                exact="true"
                 className="titleStyle"
             >
                 Jessica's Sundaes
             </NavLink>
             <NavLink
-                to="/customer_favorite"
-                exact
+                to="/shakes"
+                exact="true"
                 className="link"
                 activeStyle={{
                 background: "white",
-                }}
-            >
-            Customer Favorite
-            </NavLink>
-            <NavLink
-                to="/shakes"
-                exact
-                className="link"
-                activeStyle={{
-                    background: "white",
                 }}
             >
             Shakes
             </NavLink>
             <NavLink
                 to="/sundaes"
-                exact
+                exact="true"
                 className="link"
                 activeStyle={{
                     background: "white",
@@ -45,9 +35,9 @@ function NavBar(){
             </NavLink>
             <NavLink
                 to="/"
-                exact
+                exact="true"
                 className="link"
-                activeStyle={{
+                activestyle={{
                 background: "white",
                 }}
             >
