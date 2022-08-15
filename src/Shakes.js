@@ -6,12 +6,13 @@ function Shakes(){
     const [reviews, setReviews] = useState([])
     const [shakeId, setShakeId] = useState(0)
     const [showReviews, setShowReviews] = useState("none")
+    const [help , setHelp] = useState(false)
 
     useEffect(()=>{
         fetch("http://localhost:3500/shakes")
         .then(resp => resp.json())
         .then(shakes => setShakes(shakes))
-    },[])
+    },[help])
 
     function handleLikes(item){
         fetch(`http://localhost:3500/shakes/${item.id}`,{
@@ -25,6 +26,7 @@ function Shakes(){
     })
         .then(resp => resp.json())
         .then(newItem => handleUpdatedShake(newItem))
+        setHelp(!help)    
     }
 
     function handleReviews(item){

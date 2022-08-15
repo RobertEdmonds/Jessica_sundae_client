@@ -6,12 +6,13 @@ function Sundaes(){
     const [reviews, setReviews] = useState([])
     const [sundaeId, setSundaeId] = useState(0)
     const [showReviews, setShowReviews] = useState("none")
+    const [help , setHelp] = useState(false)
 
     useEffect(()=>{
         fetch("http://localhost:3500/sundaes")
         .then(r => r.json())
         .then(sundae => setSundaes(sundae))
-    },[])
+    },[help])
 
     function handleLikes(item){
         fetch(`http://localhost:3500/sundae/${item.id}`,{
@@ -25,6 +26,7 @@ function Sundaes(){
     })
         .then(resp => resp.json())
         .then(newItem => handleUpdatedSundae(newItem))
+        setHelp(!help)
     }
 
     function handleUpdatedSundae(item){
